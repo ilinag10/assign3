@@ -155,6 +155,61 @@ class TestChorusLapilli(unittest.TestCase):
         tiles[0].click()
         self.assertTileIs(tiles[0], self.SYMBOL_X)
 
+    def test_no_additional_moves(self):
+        '''Check that there are no additional moves after a player wins.'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        tiles[0].click()
+        tiles[3].click()
+        tiles[1].click()
+        tiles[4].click()
+        tiles[2].click()
+  
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[1], self.SYMBOL_X)
+        self.assertTileIs(tiles[2], self.SYMBOL_X)
+
+        #try to click a tile after X won
+        tiles[7].click()
+        self.assertTileIs(tiles[7], self.SYMBOL_BLANK)
+
+    def test_has_to_move_center(self):
+        '''Check that if the player has all 3 pieces on the board and they are not playing a winning move, then they have to move the center.'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        tiles[0].click()
+        tiles[1].click()
+        tiles[4].click()
+        tiles[8].click()
+        tiles[2].click()
+        tiles[3].click()
+
+        #invalid move by X
+        tiles[2].click()
+        tiles[5].click()
+
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)
+
+        #move center
+        tiles[4].click()
+        tiles[5].click()
+        self.assertTileIs(tiles[4], self.SYMBOL_BLANK)
+        self.assertTileIs(tiles[5], self.SYMBOL_X)
+    
+    def test_nonadjacent_move(self):
+        '''Check that if a player has 3 pieces on the board and attempts a nonadjacent move, no move is completed.'''
+        tiles = self.driver.find_elements(By.XPATH, self.BOARD_TILE_XPATH)
+        tiles[0].click() #X
+        tiles[1].click() #O
+        tiles[7].click()
+        tiles[8].click()
+        tiles[2].click()
+        tiles[3].click()        
+
+        tiles[0].click()
+        tiles[5].click()
+        self.assertTileIs(tiles[0], self.SYMBOL_X)
+        self.assertTileIs(tiles[5], self.SYMBOL_BLANK)        
+
 
 # ================= [DO NOT MAKE ANY CHANGES BELOW THIS LINE] =================
 
