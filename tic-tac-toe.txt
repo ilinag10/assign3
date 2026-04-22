@@ -1,0 +1,27 @@
+Started the local host using ./helper dev
+
+Added the board component. Used a fragment to wrap the elements together. The component consists of 9 squares, 3 in a row, numbered 1-9. The squares are buttons but they don't do anything yet.
+Modified the board component so that it contains Square components. Each square component on the board is numbered 1-9.
+
+Modified the Square component to contain the handleClick() function so that the squares can be clicked.
+Removed the Value parameter from the Square function and adjusted the Board component accordingly. Imported useState instead. The squares are no longer numbered 1-9. 
+Completed the handleClick() function. Now the board contains 9 blank squares, and when the user clicks on one it is replaced with an X.
+
+Added the state value squares to the Board component. Array of 9 nulls that correspond to the 9 squares. When completed, each array element will be able to update to "X" or "O" depending on the players' moves.
+Removed the handleClick() function from the Square component. Reinstated the value parameter. 
+The board is now blank and there is no visible change when a square is clicked.
+
+Added the handleClick function to the Board component. Sets a square to X when clicked.
+Added the onSquareClick function to the Square and Board components. In the Square component, the onSquareClick function is called when a square is pressed. In the Board component, when onSquareClick has been called on a particular square then the handleClick function will be called and will set that square to "X."
+Now when a square is clicked on the board, it shows an X. The Board is the parent and the Square is a child. When a square is clicked, the Square component has the Board component update that square's state.
+
+Added a use state to the Board component to keep track of whether the next move is X or O. Flip a boolean every time it becomes the other player's turn to keep track.
+Modified the handleClick function so that it does not overwrite a square that is not null (has already been played).
+Now turns alternate between X and O. X's and O's can only be placed on empty squares.
+
+Added the calculateWinner function to the Board component. Determines if there is a row of all X's or O's.
+Modified the handleClick function to call calculateWinner every time it is called. This check happens at the same time as the check for whether the square has been played already.
+Added a status section to the Board component. Displays who's turn it is and declares the winner.
+Now the game is complete. When the game is ongoing there is text above the board that says "Next player: [X or O]." When a player wins it changes to "Winner: [X or O]."
+
+
