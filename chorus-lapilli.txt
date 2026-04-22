@@ -1,0 +1,13 @@
+Started with the completed tic-tac-toe.
+
+Modified the handleClick functionality to split into two helper functions, handlePlace (if the current player has fewer than 3 pieces on the board) and handleMove (if they already have 3 and must move an existing piece.)
+handlePlace uses the same logic as the original tic-tac-toe game.
+handleMove is called twice every move, once to set the source square and once as the destination square. It sets the destination square to the piece and empties the source square.
+Now the game correctly allows only 3 pieces per player on the board at a time. It correctly moves pieces, but it does not check if the destination is valid and it does not follow the center piece rule.
+
+Modified the handleMove function to check for the center piece rule. Now when handleMove is called for the first time to set the source square, it also checks to see if that player has a piece on the center square. If yes and they have not selected the center square and have not selected a winning move, then the function returns and they must try again.
+Now the game correctly enforces that if the current player has 3 pieces on the board and one of their pieces is on the center square, then they must either play a winning move or move that center piece.
+
+Implemented the isAdjacent function to check whether the proposed destination square is adjacent to the source square.
+Converts each square index (0-8) to a row index and column index (0-2). Compares the absolute value of the source and destination row and column indexes, respectively. If either differs by more than 1, then the squares are not adjacent and it is an invalid move.
+Now the game is complete.

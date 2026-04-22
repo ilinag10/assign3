@@ -71,7 +71,7 @@ export default function Board() {
         //see if the proposed move will win
         nextSquares[sourceSquare] = null;
         nextSquares[i] = nextPiece;
-        const winningMove = calculateWinner(squares);
+        const winningMove = calculateWinner(nextSquares);
 
         //if the center piece rule has been violated, return
         if(ownsCenter && !selectedCenter && !winningMove) {
@@ -79,10 +79,7 @@ export default function Board() {
           return;
         }
         //otherwise, we can proceed
-        //empty the source square
-        //nextSquares[sourceSquare] = null;
-        //populate the destination square
-        //nextSquares[i] = nextPiece;
+        //empty the source square and populate the destination square
         setSquares(nextSquares);
         setSourceSquare(null);
         
@@ -98,6 +95,18 @@ export default function Board() {
   }
 
   function isAdjacent(src, dest) {
+    //convert src and dest to a row and column index
+    const srcRow = Math.floor(src/3);
+    const srcCol = src % 3;
+    const destRow = Math.floor(dest/3);
+    const destCol = dest % 3;
+
+    //the squares are adjacent if their row and column indexes differ by at most 1
+    const diffRow = Math.abs(srcRow - destRow);
+    const diffCol = Math.abs(srcCol - destCol);
+
+    if(diffRow > 1 || diffCol > 1) return false;
+   
     return true;
   }
 
