@@ -62,14 +62,27 @@ export default function Board() {
         setSourceSquare(i);
       }
     }
-    //else, i is the destination square and we can proceed
     else {
       //check to see if destination is valid
       if(squares[i]==null && isAdjacent(sourceSquare, i)) {
-        //empty the source square
+        //check for the center piece rule
+        const ownsCenter = (squares[4] == nextPiece);
+        const selectedCenter = (sourceSquare == 4);
+        //see if the proposed move will win
         nextSquares[sourceSquare] = null;
-        //populate the destination square
         nextSquares[i] = nextPiece;
+        const winningMove = calculateWinner(squares);
+
+        //if the center piece rule has been violated, return
+        if(ownsCenter && !selectedCenter && !winningMove) {
+          setSourceSquare(null);
+          return;
+        }
+        //otherwise, we can proceed
+        //empty the source square
+        //nextSquares[sourceSquare] = null;
+        //populate the destination square
+        //nextSquares[i] = nextPiece;
         setSquares(nextSquares);
         setSourceSquare(null);
         
