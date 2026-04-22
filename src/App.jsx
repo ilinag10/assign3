@@ -12,18 +12,80 @@ export default function Board() {
   const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
 
+  const [xCount, setXCount] = useState(0);
+  const [oCount, setOCount] = useState(0);
+
+  const [sourceSquare, setSourceSquare] = useState(null);
+  const [destinationSquare, setDestinationSquare] = useState(null);
+
   function handleClick(i) {
-    if (calculateWinner(squares) || squares[i]) {
+    if (calculateWinner(squares)) {
+      return;
+    }
+    const currentCount = xIsNext? xCount : oCount;
+    console.log("currentCount:", currentCount, "xCount:", xCount, "oCount:", oCount)
+    if(currentCount < 3) {
+      handlePlace(i);
+    }
+    else {
+      handleMove(i);
+    }
+  }
+
+  function handlePlace(i) {
+    //ensure that the player selected an empty square
+    if(squares[i]) {
       return;
     }
     const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = 'X';
-    } else {
-      nextSquares[i] = 'O';
+    //set the new square
+    nextSquares[i] = xIsNext ? 'X' : 'O';
+    setSquares(nextSquares);
+    //increment count
+    if(xIsNext) {
+      setXCount(xCount+1);
+    }
+    else {
+      setOCount(oCount+1);
     }
     setSquares(nextSquares);
     setXIsNext(!xIsNext);
+  }
+
+  function handleMove(i) {
+    const nextSquares = squares.slice();
+    const nextPiece = xIsNext? 'X' : 'O';
+    //set source square (destination square is just i)
+    //must also ensure that the source square is owned by the current player
+    if(sourceSquare == null) {
+      if(squares[i] == nextPiece) {
+        setSourceSquare(i);
+      }
+    }
+    //else, i is the destination square and we can proceed
+    else {
+      //check to see if destination is valid
+      if(squares[i]==null && isAdjacent(sourceSquare, i)) {
+        //empty the source square
+        nextSquares[sourceSquare] = null;
+        //populate the destination square
+        nextSquares[i] = nextPiece;
+        setSquares(nextSquares);
+        setSourceSquare(null);
+        
+        //change turn
+        setXIsNext(!xIsNext);
+      }
+      //if the destination is invalid, deselect the source square so that the player has to start over
+      else {
+        setSourceSquare(null);
+      }
+    }
+
+  }
+
+  function isAdjacent(src, dest) {
+    return true;
   }
 
   const winner = calculateWinner(squares);
